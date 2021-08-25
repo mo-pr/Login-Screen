@@ -4,6 +4,7 @@ import 'package:login_screen_afrshed/loginLogic.dart';
 
 class login extends StatelessWidget {
   final loginLogic logic = new loginLogic();
+  var mail, passwd;
   final _key = new GlobalKey<FormState>();
 
   @override
@@ -26,7 +27,7 @@ class login extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 40,
+                    height: 5,
                   ),
                   Image(
                     image: AssetImage('assets/images/2@1X.png'),
@@ -42,7 +43,7 @@ class login extends StatelessWidget {
                           return "Mail-Adresse darf nicht leer sein";
                         }
                       },
-                      //onSaved: (e) => feuerwehr = e,
+                      onSaved: (e) => mail = e!,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -73,7 +74,8 @@ class login extends StatelessWidget {
                           return "Passwort darf nicht leer sein";
                         }
                       },
-                      //onSaved: (e) => email = e,
+                      obscureText: true,
+                      onSaved: (e) => passwd = e,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
@@ -93,7 +95,9 @@ class login extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        logic.showToast('Clicked \'Passwort vergessen\'');
+                      },
                       child: Text(
                         'Passwort vergessen',
                         style: TextStyle(color: Colors.blue, fontSize: 18),
@@ -112,7 +116,13 @@ class login extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18)),
                             primary: Colors.blue),
-                        onPressed: () {},
+                        onPressed: () {
+                          final data = _key.currentState;
+                          if (data!.validate()) {
+                            data.save();
+                            logic.getFormData(mail, passwd);
+                          }
+                        },
                         child: Text(
                           'Login',
                           style: TextStyle(color: Colors.white, fontSize: 22),
@@ -134,38 +144,9 @@ class login extends StatelessWidget {
                   ButtonBar(
                     alignment: MainAxisAlignment.center,
                     buttonPadding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 0,
-                              blurRadius: 2,
-                              offset: Offset(1,1),
-                            )
-                          ]
-                        ),
-                        height: 70,
-                        width: 110,
-                        child: Column(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.facebook_rounded),
-                              onPressed: null,
-                            ),
-                            Text(
-                              'Google',
-                              style: TextStyle(
-                                  color: Colors.black38, fontSize: 12),
-                            ),
-                          ],
-                        )
-                      ),
-                      Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(18),
@@ -174,36 +155,7 @@ class login extends StatelessWidget {
                                   color: Colors.grey.withOpacity(0.5),
                                   spreadRadius: 0,
                                   blurRadius: 2,
-                                  offset: Offset(1,1),
-                                )
-                              ]
-                          ),
-                        height: 70,
-                        width: 110,
-                        child:Column(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.login_rounded),
-                                  onPressed: null,
-                                ),
-                                Text(
-                                  'Account erstellen',
-                                  style: TextStyle(
-                                      color: Colors.black38, fontSize: 12),
-                                ),
-                              ],
-                            )
-                      ),
-                      Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 0,
-                                  blurRadius: 2,
-                                  offset: Offset(1,1),
+                                  offset: Offset(1, 1),
                                 )
                               ]
                           ),
@@ -213,7 +165,74 @@ class login extends StatelessWidget {
                             children: [
                               IconButton(
                                 icon: Icon(Icons.facebook_rounded),
-                                onPressed: null,
+                                onPressed: () {
+                                  logic.showToast(
+                                      'Clicked \'Google\'');
+                                },
+                              ),
+                              Text(
+                                'Google',
+                                style: TextStyle(
+                                    color: Colors.black38, fontSize: 12),
+                              ),
+                            ],
+                          )
+                      ),
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(18),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 0,
+                                  blurRadius: 2,
+                                  offset: Offset(1, 1),
+                                )
+                              ]
+                          ),
+                          height: 70,
+                          width: 110,
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.login_rounded),
+                                onPressed: () {
+                                  logic.showToast(
+                                      'Clicked \'Account erstellen\'');
+                                },
+                              ),
+                              Text(
+                                'Account erstellen',
+                                style: TextStyle(
+                                    color: Colors.black38, fontSize: 12),
+                              ),
+                            ],
+                          )
+                      ),
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(18),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 0,
+                                  blurRadius: 2,
+                                  offset: Offset(1, 1),
+                                )
+                              ]
+                          ),
+                          height: 70,
+                          width: 110,
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.facebook_rounded),
+                                onPressed: () {
+                                  logic.showToast(
+                                      'Clicked \'Facebook\'');
+                                },
                               ),
                               Text(
                                 'Facebook',

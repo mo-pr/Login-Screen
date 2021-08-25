@@ -3,6 +3,7 @@ import 'package:login_screen_afrshed/login.dart';
 
 void main() {
   runApp(
-    MaterialApp(home: login())
+    MaterialApp(home: login(),
+    debugShowCheckedModeBanner: false,)
   );
 }
